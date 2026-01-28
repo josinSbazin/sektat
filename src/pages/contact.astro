@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Контакты"
+  description="Связаться с SEKTAT — букинг концертов, пресс-запросы, сотрудничество."
+>
+  <section class="pt-24 pb-16 md:pt-32 md:pb-24">
+    <div class="container">
+      <h1 class="text-4xl md:text-6xl font-black mb-4">Контакты</h1>
+      <p class="text-sektat-light/60 max-w-2xl">
+        По вопросам букинга, прессы и сотрудничества.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-16 md:pb-24">
+    <div class="container">
+      <div class="grid lg:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div>
+          <h2 class="text-2xl font-black mb-6">Написать нам</h2>
+          <form class="space-y-6" action="#" method="POST">
+            <div>
+              <label for="name" class="block text-sm font-mono text-sektat-light/60 mb-2">
+                Имя *
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="w-full px-4 py-3 bg-sektat-dark border border-sektat-gray text-sektat-light placeholder:text-sektat-light/40 focus:border-sektat-rust focus:outline-none"
+                placeholder="Ваше имя"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm font-mono text-sektat-light/60 mb-2">
+                Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 bg-sektat-dark border border-sektat-gray text-sektat-light placeholder:text-sektat-light/40 focus:border-sektat-rust focus:outline-none"
+                placeholder="your@email.com"
+              />
+            </div>
+
+            <div>
+              <label for="topic" class="block text-sm font-mono text-sektat-light/60 mb-2">
+                Тема
+              </label>
+              <select
+                id="topic"
+                name="topic"
+                class="w-full px-4 py-3 bg-sektat-dark border border-sektat-gray text-sektat-light focus:border-sektat-rust focus:outline-none"
+              >
+                <option value="booking">Букинг концертов</option>
+                <option value="press">Пресс-запрос / Интервью</option>
+                <option value="collab">Сотрудничество</option>
+                <option value="other">Другое</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="message" class="block text-sm font-mono text-sektat-light/60 mb-2">
+                Сообщение *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="6"
+                class="w-full px-4 py-3 bg-sektat-dark border border-sektat-gray text-sektat-light placeholder:text-sektat-light/40 focus:border-sektat-rust focus:outline-none resize-none"
+                placeholder="Ваше сообщение..."
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full">
+              Отправить
+            </button>
+
+            <p class="text-xs text-sektat-light/40 text-center">
+              Мы ответим в течение 2-3 рабочих дней
+            </p>
+          </form>
+        </div>
+
+        <!-- Direct Contacts -->
+        <div>
+          <h2 class="text-2xl font-black mb-6">Прямые контакты</h2>
+
+          <div class="space-y-6">
+            <!-- Booking -->
+            <div class="p-6 border border-sektat-gray">
+              <h3 class="font-bold mb-2">Букинг</h3>
+              <p class="text-sektat-light/60 text-sm mb-3">
+                Концерты, фестивали, корпоративы
+              </p>
+              <a href="mailto:booking@sektat.band" class="text-sektat-rust hover:text-sektat-rust-light">
+                booking@sektat.band
+              </a>
+            </div>
+
+            <!-- Press -->
+            <div class="p-6 border border-sektat-gray">
+              <h3 class="font-bold mb-2">Пресса</h3>
+              <p class="text-sektat-light/60 text-sm mb-3">
+                Интервью, рецензии, публикации
+              </p>
+              <a href="mailto:press@sektat.band" class="text-sektat-rust hover:text-sektat-rust-light">
+                press@sektat.band
+              </a>
+            </div>
+
+            <!-- Social -->
+            <div class="p-6 border border-sektat-gray">
+              <h3 class="font-bold mb-2">Соцсети</h3>
+              <p class="text-sektat-light/60 text-sm mb-3">
+                Следите за новостями
+              </p>
+              <div class="flex gap-4">
+                <a href="https://t.me/sektat_band" target="_blank" rel="noopener noreferrer" class="text-sektat-rust hover:text-sektat-rust-light">
+                  Telegram
+                </a>
+                <a href="https://instagram.com/sektat_band" target="_blank" rel="noopener noreferrer" class="text-sektat-rust hover:text-sektat-rust-light">
+                  Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tech Rider -->
+          <div class="mt-8 p-6 bg-sektat-dark border border-sektat-gray">
+            <h3 class="font-bold mb-2">Технический райдер</h3>
+            <p class="text-sektat-light/60 text-sm mb-4">
+              Stage plot и input list доступны по запросу
+            </p>
+            <a href="mailto:booking@sektat.band?subject=Tech%20Rider%20Request" class="btn btn-secondary text-sm">
+              Запросить райдер
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

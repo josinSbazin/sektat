@@ -1,0 +1,199 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const links = {
+  bandcamp: 'https://sektat.bandcamp.com',
+  appleMusic: 'https://music.apple.com/artist/sektat/1814322842',
+  instagram: 'https://instagram.com/sektat_band',
+  telegram: 'https://t.me/sektat_band',
+};
+
+const pressQuotes = [
+  {
+    text: 'Сладжкор с параллелями к Eyehategod и Converge — быстрый сладж, технические краст-элементы, экстремальный металл через панк-призму.',
+    source: 'sad wave',
+    release: 'о «Первые дни»',
+  },
+  {
+    text: 'Более техничный, менее «грязный», с чётким вокалом. Панк-спектр смещается в сторону краста. Сильная «сырая ярость».',
+    source: 'sad wave',
+    release: 'о «II»',
+  },
+];
+---
+
+<BaseLayout
+  title="Press Kit / EPK"
+  description="Electronic Press Kit для SEKTAT — био, фото, логотипы, контакты для букинга и прессы."
+>
+  <section class="pt-24 pb-16 md:pt-32 md:pb-24">
+    <div class="container">
+      <h1 class="text-4xl md:text-6xl font-black mb-4">Press Kit</h1>
+      <p class="text-sektat-light/60 max-w-2xl">
+        Материалы для промоутеров, журналистов, площадок и фестивалей.
+      </p>
+    </div>
+  </section>
+
+  <!-- Bio -->
+  <section class="pb-16 md:pb-24">
+    <div class="container">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2">
+          <h2 class="text-2xl font-black mb-4">Биография</h2>
+
+          <!-- One-liner -->
+          <p class="text-xl text-sektat-rust font-bold mb-6">
+            SEKTAT — московская hardcore punk/metal группа. Fierce hardcore-punk, infused with the abrasive fury of metal.
+          </p>
+
+          <!-- Short bio -->
+          <div class="mb-6">
+            <h3 class="text-sm font-mono text-sektat-light/40 mb-2">Короткая версия</h3>
+            <p class="text-sektat-light/80">
+              SEKTAT — московская группа, играющая на стыке hardcore punk и metal. Оба мини-альбома записаны вживую в CSBR Studio. Сладжкор с отсылками к Eyehategod и Converge: быстрый сладж, технические краст-элементы, экстремальный металл через панк-призму.
+            </p>
+          </div>
+
+          <!-- Long bio -->
+          <div>
+            <h3 class="text-sm font-mono text-sektat-light/40 mb-2">Полная версия</h3>
+            <div class="space-y-4 text-sektat-light/80">
+              <p>
+                SEKTAT — московская группа, образованная на стыке hardcore punk и metal. Группа описывает свой звук как «fierce hardcore-punk, infused with the abrasive fury of metal» — яростный хардкор-панк, пропитанный агрессивной мощью металла.
+              </p>
+              <p>
+                Дебютный мини-альбом «Первые дни» вышел в июне 2025 года. Рецензенты отмечают параллели с Eyehategod и Converge — быстрый сладж, технические краст-элементы, экстремальный металл через панк-призму.
+              </p>
+              <p>
+                Второй мини-альбом «II» вышел в октябре 2025 года. По сравнению с дебютом — более техничный, с чётким вокалом. Панк-спектр смещается в сторону краста. Визуальная эстетика — ржавчина, колючая проволока, безнадёжность.
+              </p>
+              <p>
+                Оба релиза записаны вживую в московской CSBR Studio. Звукорежиссёр — Илья Маевский. Оформление — Максим Новиков.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Quick Facts -->
+          <div class="p-6 bg-sektat-dark border border-sektat-gray">
+            <h3 class="text-lg font-bold mb-4">Факты</h3>
+            <dl class="space-y-3 text-sm">
+              <div>
+                <dt class="text-sektat-light/40">Город</dt>
+                <dd>Москва, Россия</dd>
+              </div>
+              <div>
+                <dt class="text-sektat-light/40">Жанр</dt>
+                <dd>Hardcore Punk / Metal / Sludge</dd>
+              </div>
+              <div>
+                <dt class="text-sektat-light/40">Релизы</dt>
+                <dd>2 EP (2025)</dd>
+              </div>
+              <div>
+                <dt class="text-sektat-light/40">Студия</dt>
+                <dd>CSBR Studio</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Links -->
+          <div class="p-6 bg-sektat-dark border border-sektat-gray">
+            <h3 class="text-lg font-bold mb-4">Ссылки</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href={links.bandcamp} target="_blank" rel="noopener noreferrer" class="text-sektat-rust hover:text-sektat-rust-light">
+                  Bandcamp →
+                </a>
+              </li>
+              <li>
+                <a href={links.appleMusic} target="_blank" rel="noopener noreferrer" class="text-sektat-rust hover:text-sektat-rust-light">
+                  Apple Music →
+                </a>
+              </li>
+              <li>
+                <a href={links.instagram} target="_blank" rel="noopener noreferrer" class="text-sektat-rust hover:text-sektat-rust-light">
+                  Instagram →
+                </a>
+              </li>
+              <li>
+                <a href={links.telegram} target="_blank" rel="noopener noreferrer" class="text-sektat-rust hover:text-sektat-rust-light">
+                  Telegram →
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Press Quotes -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray bg-sektat-dark">
+    <div class="container">
+      <h2 class="text-2xl font-black mb-8">Пресса</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {pressQuotes.map((quote) => (
+          <blockquote class="p-6 border border-sektat-gray">
+            <p class="text-lg text-sektat-light/80 mb-4">"{quote.text}"</p>
+            <footer class="text-sm">
+              <cite class="text-sektat-rust not-italic">{quote.source}</cite>
+              <span class="text-sektat-light/40"> — {quote.release}</span>
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Downloads -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray">
+    <div class="container">
+      <h2 class="text-2xl font-black mb-8">Материалы для скачивания</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Logos -->
+        <div class="p-6 border border-sektat-gray">
+          <h3 class="font-bold mb-4">Логотипы</h3>
+          <p class="text-sm text-sektat-light/60 mb-4">SVG/PNG, светлые и тёмные варианты</p>
+          <a href="/assets/logos/logo_skull_white.png" download class="btn btn-secondary w-full text-sm">
+            Скачать логотипы
+          </a>
+        </div>
+
+        <!-- Photos -->
+        <div class="p-6 border border-sektat-gray">
+          <h3 class="font-bold mb-4">Фотографии</h3>
+          <p class="text-sm text-sektat-light/60 mb-4">Высокое разрешение для прессы</p>
+          <a href="/assets/images/band_photo_1.jpg" download class="btn btn-secondary w-full text-sm">
+            Скачать фото
+          </a>
+        </div>
+
+        <!-- Covers -->
+        <div class="p-6 border border-sektat-gray">
+          <h3 class="font-bold mb-4">Обложки</h3>
+          <p class="text-sm text-sektat-light/60 mb-4">Обложки релизов</p>
+          <a href="/assets/images/album_cover_sektat-ii.png" download class="btn btn-secondary w-full text-sm">
+            Скачать обложки
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray bg-sektat-dark">
+    <div class="container text-center">
+      <h2 class="text-2xl font-black mb-4">Букинг и пресса</h2>
+      <p class="text-sektat-light/60 mb-6">
+        По вопросам концертов, интервью и сотрудничества
+      </p>
+      <a href="/contact" class="btn btn-primary">
+        Связаться →
+      </a>
+    </div>
+  </section>
+</BaseLayout>

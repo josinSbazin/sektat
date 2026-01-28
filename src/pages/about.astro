@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const releases = await getCollection('releases');
+const sortedReleases = releases.sort((a, b) =>
+  new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime()
+);
+
+const lineup = [
+  { role: 'Гитара', name: 'Максим' },
+  { role: 'Вокал', name: 'Никита' },
+  { role: 'Барабаны', name: 'Руслан' },
+  { role: 'Бас', name: 'Роман' },
+];
+---
+
+<BaseLayout
+  title="О группе"
+  description="SEKTAT — московская hardcore punk/metal группа. Fierce hardcore-punk, infused with the abrasive fury of metal."
+>
+  <section class="pt-24 pb-16 md:pt-32 md:pb-24">
+    <div class="container">
+      <h1 class="text-4xl md:text-6xl font-black mb-8">О группе</h1>
+
+      <div class="grid lg:grid-cols-2 gap-12">
+        <!-- Bio -->
+        <div>
+          <p class="text-xl text-sektat-light/80 mb-6">
+            SEKTAT — московская hardcore punk/metal группа.
+          </p>
+          <blockquote class="text-2xl md:text-3xl font-black text-sektat-rust mb-6 border-l-4 border-sektat-rust pl-6">
+            "Fierce hardcore-punk, infused with the abrasive fury of metal."
+          </blockquote>
+
+          <div class="space-y-4 text-sektat-light/80">
+            <p>
+              Сладжкор с параллелями к Eyehategod и Converge — быстрый сладж, технические краст-элементы, экстремальный металл через панк-призму.
+            </p>
+            <p>
+              Все релизы записаны вживую в CSBR Studio (Москва). Записано и сведено Ильёй Маевским. Оформление — Максим Новиков.
+            </p>
+          </div>
+
+          <!-- Sound bullets -->
+          <div class="mt-8 p-6 bg-sektat-dark border border-sektat-gray">
+            <h2 class="text-lg font-bold mb-4">Звук</h2>
+            <ul class="space-y-2 text-sektat-light/80">
+              <li class="flex items-start gap-3">
+                <span class="text-sektat-rust">—</span>
+                Hardcore punk + metal fury
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-sektat-rust">—</span>
+                Sludge/technical/crust
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-sektat-rust">—</span>
+                Live-recorded raw energy
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-sektat-rust">—</span>
+                Bleak aesthetic: rust / wire / hopelessness
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Photo -->
+        <div>
+          <img
+            src="/assets/images/band_photo_1.jpg"
+            alt="SEKTAT"
+            class="w-full aspect-[4/5] object-cover"
+            width="600"
+            height="750"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lineup -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray">
+    <div class="container">
+      <h2 class="text-3xl md:text-4xl font-black mb-8">Состав</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {lineup.map((member) => (
+          <div class="text-center p-6 border border-sektat-gray">
+            <p class="text-2xl font-black mb-2">{member.name}</p>
+            <p class="text-sm font-mono text-sektat-rust">{member.role}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Discography -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray bg-sektat-dark">
+    <div class="container">
+      <h2 class="text-3xl md:text-4xl font-black mb-8">Дискография</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {sortedReleases.map((release) => (
+          <a
+            href={`/releases/${release.slug}`}
+            class="flex gap-4 p-4 border border-sektat-gray hover:border-sektat-rust transition-colors group"
+          >
+            <img
+              src={release.data.cover}
+              alt={release.data.title}
+              class="w-24 h-24 object-cover flex-shrink-0"
+              width="96"
+              height="96"
+            />
+            <div>
+              <p class="text-sm font-mono text-sektat-rust">
+                {new Date(release.data.releaseDate).getFullYear()} • {release.data.type.toUpperCase()}
+              </p>
+              <h3 class="text-xl font-black group-hover:text-sektat-rust-light transition-colors">
+                {release.data.title}
+              </h3>
+              <p class="text-sm text-sektat-light/60 mt-1">
+                {release.data.tracks.length} треков
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Studio -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray">
+    <div class="container text-center">
+      <p class="text-sm font-mono text-sektat-light/40 mb-2">Записано в</p>
+      <p class="text-2xl md:text-3xl font-black">CSBR Studio, Москва</p>
+      <p class="text-sektat-light/60 mt-2">Звукорежиссёр — Илья Маевский</p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* SEKTAT Brand Colors */
+@theme {
+  --color-sektat-black: #0a0a0a;
+  --color-sektat-dark: #141414;
+  --color-sektat-gray: #1f1f1f;
+  --color-sektat-light: #e5e5e5;
+  --color-sektat-white: #fafafa;
+  --color-sektat-rust: #b34a1e;
+  --color-sektat-rust-light: #d4612a;
+  --color-sektat-blood: #8b1a1a;
+
+  /* Typography */
+  --font-heading: "Inter", "Arial Black", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-sektat-black);
+  color: var(--color-sektat-light);
+  min-height: 100vh;
+}
+
+/* Grain/noise texture overlay */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay {
+    display: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-sektat-rust);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-sektat-rust);
+  color: var(--color-sektat-white);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Links */
+a {
+  color: var(--color-sektat-light);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--color-sektat-rust-light);
+}
+
+/* Button base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.btn-primary {
+  background-color: var(--color-sektat-rust);
+  color: var(--color-sektat-white);
+  border-color: var(--color-sektat-rust);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-sektat-rust-light);
+  border-color: var(--color-sektat-rust-light);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-sektat-light);
+  border-color: var(--color-sektat-light);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-sektat-light);
+  color: var(--color-sektat-black);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-sektat-light);
+  border-color: transparent;
+}
+
+.btn-ghost:hover {
+  color: var(--color-sektat-rust-light);
+}
+
+/* Micro-interaction: hover jitter */
+.jitter-hover {
+  transition: transform 0.1s ease;
+}
+
+.jitter-hover:hover {
+  transform: translate(1px, -1px);
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: 2rem;
+  }
+}

@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const shows = await getCollection('shows');
+const upcomingShows = shows
+  .filter(show => !show.data.isPast)
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+
+const pastShows = shows
+  .filter(show => show.data.isPast)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout
+  title="Концерты"
+  description="Расписание концертов SEKTAT — предстоящие и прошедшие выступления."
+>
+  <section class="pt-24 pb-16 md:pt-32 md:pb-24">
+    <div class="container">
+      <h1 class="text-4xl md:text-6xl font-black mb-4">Концерты</h1>
+      <p class="text-sektat-light/60 max-w-2xl">
+        Предстоящие и прошедшие выступления.
+      </p>
+    </div>
+  </section>
+
+  <!-- Upcoming Shows -->
+  <section class="pb-16 md:pb-24">
+    <div class="container">
+      <h2 class="text-2xl font-black mb-6 flex items-center gap-3">
+        <span class="w-2 h-2 bg-sektat-rust rounded-full animate-pulse"></span>
+        Предстоящие
+      </h2>
+
+      {upcomingShows.length > 0 ? (
+        <div class="space-y-4">
+          {upcomingShows.map((show) => (
+            <article class="p-6 border border-sektat-gray hover:border-sektat-rust transition-colors">
+              <div class="flex flex-col md:flex-row md:items-center gap-6">
+                <!-- Date -->
+                <div class="text-center md:text-left md:w-40 flex-shrink-0">
+                  <p class="text-3xl font-black text-sektat-rust">
+                    {new Date(show.data.date).toLocaleDateString('ru-RU', { day: 'numeric' })}
+                  </p>
+                  <p class="text-lg font-bold">
+                    {new Date(show.data.date).toLocaleDateString('ru-RU', { month: 'long' })}
+                  </p>
+                  <p class="text-sm font-mono text-sektat-light/60">
+                    {new Date(show.data.date).getFullYear()}
+                  </p>
+                </div>
+
+                <!-- Info -->
+                <div class="flex-1">
+                  <h3 class="text-2xl font-black mb-1">{show.data.venue}</h3>
+                  <p class="text-sektat-light/60 mb-2">{show.data.city}, {show.data.country}</p>
+                  {show.data.lineup && show.data.lineup.length > 1 && (
+                    <p class="text-sm text-sektat-light/40">
+                      + {show.data.lineup.filter(b => b !== 'SEKTAT').join(', ')}
+                    </p>
+                  )}
+                </div>
+
+                <!-- Details -->
+                <div class="flex flex-col items-end gap-2">
+                  {show.data.startTime && (
+                    <p class="font-mono text-sektat-light/60">
+                      {show.data.startTime}
+                      {show.data.endTime && ` — ${show.data.endTime}`}
+                    </p>
+                  )}
+                  <p class="text-lg font-bold text-sektat-rust">
+                    {show.data.price || 'TBA'}
+                  </p>
+                  {show.data.eventUrl && (
+                    <a
+                      href={show.data.eventUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-primary text-sm py-2"
+                    >
+                      Событие →
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16 border border-dashed border-sektat-gray">
+          <p class="text-xl text-sektat-light/60 mb-4">Нет запланированных концертов</p>
+          <p class="text-sektat-light/40 mb-6">Подпишитесь, чтобы узнать первыми о новых датах</p>
+          <a href="https://t.me/sektat_band" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            Telegram →
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Past Shows -->
+  {pastShows.length > 0 && (
+    <section class="py-16 md:py-24 border-t border-sektat-gray bg-sektat-dark">
+      <div class="container">
+        <h2 class="text-2xl font-black mb-6 text-sektat-light/40">Архив</h2>
+
+        <div class="space-y-2">
+          {pastShows.map((show) => (
+            <article class="flex flex-col md:flex-row md:items-center gap-4 p-4 border border-sektat-gray/50 opacity-60 hover:opacity-100 transition-opacity">
+              <div class="md:w-32 flex-shrink-0">
+                <p class="font-mono text-sm text-sektat-light/40">
+                  {new Date(show.data.date).toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </p>
+              </div>
+              <div class="flex-1">
+                <p class="font-bold">{show.data.venue}</p>
+                <p class="text-sm text-sektat-light/40">{show.data.city}</p>
+              </div>
+              {show.data.lineup && show.data.lineup.length > 1 && (
+                <div class="text-sm text-sektat-light/40">
+                  {show.data.lineup.join(' • ')}
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

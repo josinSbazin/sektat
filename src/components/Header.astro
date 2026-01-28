@@ -1,0 +1,138 @@
+---
+const currentPath = Astro.url.pathname;
+const currentLocale = Astro.currentLocale || 'ru';
+
+const navigation = {
+  ru: [
+    { href: '/', label: 'Главная' },
+    { href: '/releases', label: 'Музыка' },
+    { href: '/live', label: 'Концерты' },
+    { href: '/about', label: 'О группе' },
+    { href: '/epk', label: 'EPK' },
+    { href: '/contact', label: 'Контакты' },
+  ],
+  en: [
+    { href: '/en', label: 'Home' },
+    { href: '/en/releases', label: 'Music' },
+    { href: '/en/live', label: 'Live' },
+    { href: '/en/about', label: 'About' },
+    { href: '/en/epk', label: 'EPK' },
+    { href: '/en/contact', label: 'Contact' },
+  ],
+};
+
+const nav = navigation[currentLocale as keyof typeof navigation] || navigation.ru;
+
+function isActive(href: string): boolean {
+  if (href === '/' || href === '/en') {
+    return currentPath === href;
+  }
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-sektat-black/95 backdrop-blur-sm border-b border-sektat-gray">
+  <div class="container">
+    <nav class="flex items-center justify-between h-16 md:h-20">
+      <!-- Logo -->
+      <a href={currentLocale === 'en' ? '/en' : '/'} class="flex items-center gap-3 jitter-hover">
+        <img
+          src="/assets/logos/logo_skull_white.png"
+          alt="SEKTAT"
+          class="h-10 md:h-12 w-auto"
+          width="48"
+          height="48"
+        />
+        <span class="text-xl md:text-2xl font-black tracking-tight">SEKTAT</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <ul class="hidden md:flex items-center gap-6 lg:gap-8">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'text-sm font-bold uppercase tracking-wider jitter-hover',
+                isActive(item.href) ? 'text-sektat-rust' : 'text-sektat-light hover:text-sektat-rust-light',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- Language Switch + Mobile Menu Toggle -->
+      <div class="flex items-center gap-4">
+        <!-- Language Switch -->
+        <div class="flex items-center gap-1 text-sm font-mono">
+          <a
+            href="/"
+            class:list={[
+              'px-2 py-1 transition-colors',
+              currentLocale === 'ru' ? 'text-sektat-rust' : 'text-sektat-light/60 hover:text-sektat-light',
+            ]}
+          >
+            RU
+          </a>
+          <span class="text-sektat-gray">/</span>
+          <a
+            href="/en"
+            class:list={[
+              'px-2 py-1 transition-colors',
+              currentLocale === 'en' ? 'text-sektat-rust' : 'text-sektat-light/60 hover:text-sektat-light',
+            ]}
+          >
+            EN
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobile-menu-btn"
+          class="md:hidden p-2 text-sektat-light hover:text-sektat-rust-light"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden bg-sektat-black border-t border-sektat-gray"
+  >
+    <ul class="container py-4 space-y-2">
+      {nav.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'block py-2 text-lg font-bold uppercase tracking-wider',
+              isActive(item.href) ? 'text-sektat-rust' : 'text-sektat-light',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuBtn?.addEventListener('click', () => {
+    const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+    menuBtn.setAttribute('aria-expanded', String(!isExpanded));
+    mobileMenu?.classList.toggle('hidden');
+  });
+</script>

@@ -1,0 +1,215 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const releases = await getCollection('releases');
+const latestRelease = releases.sort((a, b) =>
+  new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime()
+)[0];
+
+const shows = await getCollection('shows');
+const upcomingShows = shows
+  .filter(show => !show.data.isPast)
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+---
+
+<BaseLayout title="Главная">
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center relative pt-20">
+    <div class="container text-center">
+      <!-- Logo -->
+      <div class="mb-8">
+        <img
+          src="/assets/logos/logo_skull_white.png"
+          alt="SEKTAT"
+          class="w-32 h-32 md:w-48 md:h-48 mx-auto mb-6"
+          width="192"
+          height="192"
+        />
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-4">
+          SEKTAT
+        </h1>
+        <p class="text-lg md:text-xl text-sektat-light/80 max-w-2xl mx-auto">
+          Fierce hardcore-punk, infused with the abrasive fury of metal.
+        </p>
+        <p class="text-sm font-mono text-sektat-light/60 mt-2">
+          Moscow
+        </p>
+      </div>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
+        <a href="/releases" class="btn btn-primary">
+          Слушать
+        </a>
+        <a href="/live" class="btn btn-secondary">
+          Концерты
+        </a>
+        <a href="/epk" class="btn btn-ghost">
+          Press Kit →
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-sektat-light/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- Latest Release Section -->
+  {latestRelease && (
+    <section class="py-16 md:py-24 border-t border-sektat-gray">
+      <div class="container">
+        <h2 class="text-3xl md:text-4xl font-black mb-8">Новый релиз</h2>
+
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <!-- Cover -->
+          <div class="relative group">
+            <img
+              src={latestRelease.data.cover}
+              alt={latestRelease.data.title}
+              class="w-full aspect-square object-cover"
+              width="600"
+              height="600"
+            />
+            <div class="absolute inset-0 bg-sektat-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <a href={latestRelease.data.bandcampUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                Слушать на Bandcamp
+              </a>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div>
+            <p class="text-sm font-mono text-sektat-rust mb-2">
+              {latestRelease.data.type.toUpperCase()} • {new Date(latestRelease.data.releaseDate).getFullYear()}
+            </p>
+            <h3 class="text-4xl md:text-5xl font-black mb-4">{latestRelease.data.title}</h3>
+            <p class="text-sektat-light/80 mb-6">
+              {latestRelease.data.description}
+            </p>
+
+            <!-- Tracklist preview -->
+            <div class="mb-6">
+              <h4 class="text-sm font-mono text-sektat-light/60 mb-2">Треклист:</h4>
+              <ol class="space-y-1 text-sm">
+                {latestRelease.data.tracks.slice(0, 3).map((track, i) => (
+                  <li class="flex justify-between text-sektat-light/80">
+                    <span>{i + 1}. {track.title}</span>
+                    <span class="font-mono text-sektat-light/40">{track.duration}</span>
+                  </li>
+                ))}
+                {latestRelease.data.tracks.length > 3 && (
+                  <li class="text-sektat-light/40">+ ещё {latestRelease.data.tracks.length - 3} трека</li>
+                )}
+              </ol>
+            </div>
+
+            <!-- Links -->
+            <div class="flex flex-wrap gap-3">
+              <a href={latestRelease.data.bandcampUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                Bandcamp
+              </a>
+              {latestRelease.data.appleMusicUrl && (
+                <a href={latestRelease.data.appleMusicUrl} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                  Apple Music
+                </a>
+              )}
+              <a href={`/releases/${latestRelease.slug}`} class="btn btn-ghost">
+                Подробнее →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Live-Recorded Ethos -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray bg-sektat-dark">
+    <div class="container text-center">
+      <p class="text-xl md:text-2xl text-sektat-light/80 max-w-3xl mx-auto">
+        «Оба мини-альбома записаны вживую в московской CSBR Studio»
+      </p>
+      <p class="text-sm font-mono text-sektat-light/40 mt-4">
+        Записано и сведено Ильёй Маевским
+      </p>
+    </div>
+  </section>
+
+  <!-- Upcoming Shows -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray">
+    <div class="container">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-3xl md:text-4xl font-black">Концерты</h2>
+        <a href="/live" class="btn btn-ghost">
+          Все концерты →
+        </a>
+      </div>
+
+      {upcomingShows.length > 0 ? (
+        <div class="space-y-4">
+          {upcomingShows.slice(0, 3).map((show) => (
+            <a
+              href={show.data.eventUrl || `/live/${show.slug}`}
+              target={show.data.eventUrl ? "_blank" : undefined}
+              rel={show.data.eventUrl ? "noopener noreferrer" : undefined}
+              class="block p-6 border border-sektat-gray hover:border-sektat-rust transition-colors group"
+            >
+              <div class="flex flex-col md:flex-row md:items-center gap-4">
+                <div class="text-center md:text-left md:w-32">
+                  <p class="text-2xl font-black text-sektat-rust">
+                    {new Date(show.data.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}
+                  </p>
+                  <p class="text-sm font-mono text-sektat-light/60">
+                    {show.data.startTime}
+                  </p>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-xl font-bold group-hover:text-sektat-rust-light transition-colors">
+                    {show.data.venue}
+                  </h3>
+                  <p class="text-sektat-light/60">{show.data.city}</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm font-mono text-sektat-rust">
+                    {show.data.price || 'TBA'}
+                  </p>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12 border border-dashed border-sektat-gray">
+          <p class="text-sektat-light/60 mb-4">Нет предстоящих концертов</p>
+          <p class="text-sm text-sektat-light/40">Подпишитесь, чтобы узнать первыми</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="py-16 md:py-24 border-t border-sektat-gray bg-sektat-dark">
+    <div class="container text-center">
+      <h2 class="text-2xl md:text-3xl font-black mb-4">Будь в курсе</h2>
+      <p class="text-sektat-light/60 mb-8 max-w-md mx-auto">
+        Новые релизы и анонсы концертов — без спама.
+      </p>
+      <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <input
+          type="email"
+          placeholder="your@email.com"
+          class="flex-1 px-4 py-3 bg-sektat-black border border-sektat-gray text-sektat-light placeholder:text-sektat-light/40 focus:border-sektat-rust focus:outline-none"
+          required
+        />
+        <button type="submit" class="btn btn-primary">
+          Подписаться
+        </button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const releases = await getCollection('releases');
+const sortedReleases = releases.sort((a, b) =>
+  new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime()
+);
+---
+
+<BaseLayout
+  title="Музыка"
+  description="Дискография SEKTAT — мини-альбомы, записанные вживую в CSBR Studio, Москва."
+>
+  <section class="pt-24 pb-16 md:pt-32 md:pb-24">
+    <div class="container">
+      <h1 class="text-4xl md:text-6xl font-black mb-4">Музыка</h1>
+      <p class="text-sektat-light/60 max-w-2xl">
+        Все релизы записаны вживую в CSBR Studio, Москва. Записано и сведено Ильёй Маевским.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-16 md:pb-24">
+    <div class="container">
+      <div class="grid md:grid-cols-2 gap-8">
+        {sortedReleases.map((release) => (
+          <article class="group">
+            <a href={`/releases/${release.slug}`} class="block">
+              <div class="relative overflow-hidden mb-4">
+                <img
+                  src={release.data.cover}
+                  alt={release.data.title}
+                  class="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
+                  width="600"
+                  height="600"
+                />
+                <div class="absolute inset-0 bg-sektat-black/0 group-hover:bg-sektat-black/40 transition-colors" />
+              </div>
+              <div>
+                <p class="text-sm font-mono text-sektat-rust mb-1">
+                  {release.data.type.toUpperCase()} • {new Date(release.data.releaseDate).getFullYear()}
+                </p>
+                <h2 class="text-2xl md:text-3xl font-black group-hover:text-sektat-rust-light transition-colors">
+                  {release.data.title}
+                </h2>
+                <p class="text-sektat-light/60 mt-2 line-clamp-2">
+                  {release.data.description}
+                </p>
+                <p class="text-sm text-sektat-light/40 mt-2">
+                  {release.data.tracks.length} треков
+                </p>
+              </div>
+            </a>
+            <div class="flex gap-3 mt-4">
+              <a
+                href={release.data.bandcampUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary text-xs py-2 px-4"
+              >
+                Bandcamp
+              </a>
+              {release.data.appleMusicUrl && (
+                <a
+                  href={release.data.appleMusicUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary text-xs py-2 px-4"
+                >
+                  Apple Music
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const releases = await getCollection('releases');
+  return releases.map((release) => ({
+    params: { slug: release.slug },
+    props: { release },
+  }));
+}
+
+interface Props {
+  release: CollectionEntry<'releases'>;
+}
+
+const { release } = Astro.props;
+const { Content } = await release.render();
+---
+
+<BaseLayout
+  title={release.data.title}
+  description={release.data.description}
+  image={release.data.cover}
+>
+  <article class="pt-24 pb-16 md:pt-32 md:pb-24">
+    <div class="container">
+      <!-- Back link -->
+      <a href="/releases" class="inline-flex items-center gap-2 text-sektat-light/60 hover:text-sektat-rust-light mb-8">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Все релизы
+      </a>
+
+      <div class="grid lg:grid-cols-2 gap-12">
+        <!-- Cover -->
+        <div>
+          <img
+            src={release.data.cover}
+            alt={release.data.title}
+            class="w-full aspect-square object-cover"
+            width="800"
+            height="800"
+          />
+        </div>
+
+        <!-- Info -->
+        <div>
+          <p class="text-sm font-mono text-sektat-rust mb-2">
+            {release.data.type.toUpperCase()} • {new Date(release.data.releaseDate).toLocaleDateString('ru-RU', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </p>
+          <h1 class="text-4xl md:text-6xl font-black mb-6">{release.data.title}</h1>
+
+          <p class="text-lg text-sektat-light/80 mb-8">
+            {release.data.description}
+          </p>
+
+          <!-- Listen buttons -->
+          <div class="flex flex-wrap gap-3 mb-8">
+            <a
+              href={release.data.bandcampUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary"
+            >
+              Bandcamp
+            </a>
+            {release.data.appleMusicUrl && (
+              <a
+                href={release.data.appleMusicUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-secondary"
+              >
+                Apple Music
+              </a>
+            )}
+            {release.data.bandLinkUrl && (
+              <a
+                href={release.data.bandLinkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-ghost"
+              >
+                Все платформы →
+              </a>
+            )}
+          </div>
+
+          <!-- Tracklist -->
+          <div class="mb-8">
+            <h2 class="text-lg font-bold mb-4">Треклист</h2>
+            <ol class="space-y-2">
+              {release.data.tracks.map((track, i) => (
+                <li class="flex justify-between py-2 border-b border-sektat-gray">
+                  <span class="text-sektat-light">
+                    <span class="text-sektat-light/40 font-mono mr-3">{String(i + 1).padStart(2, '0')}</span>
+                    {track.title}
+                  </span>
+                  <span class="font-mono text-sektat-light/40">{track.duration}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <!-- Credits -->
+          <div class="p-6 bg-sektat-dark border border-sektat-gray">
+            <h2 class="text-lg font-bold mb-4">Над релизом работали</h2>
+            <dl class="grid grid-cols-2 gap-4 text-sm">
+              {release.data.credits.guitar && (
+                <>
+                  <dt class="text-sektat-light/40">Гитара</dt>
+                  <dd>{release.data.credits.guitar}</dd>
+                </>
+              )}
+              {release.data.credits.vocals && (
+                <>
+                  <dt class="text-sektat-light/40">Вокал</dt>
+                  <dd>{release.data.credits.vocals}</dd>
+                </>
+              )}
+              {release.data.credits.drums && (
+                <>
+                  <dt class="text-sektat-light/40">Барабаны</dt>
+                  <dd>{release.data.credits.drums}</dd>
+                </>
+              )}
+              {release.data.credits.bass && (
+                <>
+                  <dt class="text-sektat-light/40">Бас</dt>
+                  <dd>{release.data.credits.bass}</dd>
+                </>
+              )}
+              {release.data.credits.recording && (
+                <>
+                  <dt class="text-sektat-light/40">Запись</dt>
+                  <dd>{release.data.credits.recording}</dd>
+                </>
+              )}
+              {release.data.credits.mixing && (
+                <>
+                  <dt class="text-sektat-light/40">Сведение</dt>
+                  <dd>{release.data.credits.mixing}</dd>
+                </>
+              )}
+              {release.data.credits.studio && (
+                <>
+                  <dt class="text-sektat-light/40">Студия</dt>
+                  <dd>{release.data.credits.studio}</dd>
+                </>
+              )}
+              {release.data.credits.artwork && (
+                <>
+                  <dt class="text-sektat-light/40">Обложка</dt>
+                  <dd>{release.data.credits.artwork}</dd>
+                </>
+              )}
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional content from markdown -->
+      {Content && (
+        <div class="mt-12 prose prose-invert max-w-none">
+          <Content />
+        </div>
+      )}
+    </div>
+  </article>
+
+  <!-- Schema.org MusicAlbum -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "MusicAlbum",
+    "name": release.data.title,
+    "byArtist": {
+      "@type": "MusicGroup",
+      "name": "SEKTAT"
+    },
+    "datePublished": release.data.releaseDate,
+    "numTracks": release.data.tracks.length,
+    "track": release.data.tracks.map((track, i) => ({
+      "@type": "MusicRecording",
+      "name": track.title,
+      "duration": `PT${track.duration.replace(':', 'M')}S`,
+      "position": i + 1
+    }))
+  })} />
+</BaseLayout>
