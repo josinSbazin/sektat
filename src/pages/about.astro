@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
+const base = import.meta.env.BASE_URL;
+
 const releases = await getCollection('releases');
 const sortedReleases = releases.sort((a, b) =>
   new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime()
@@ -69,7 +71,7 @@ const lineup = [
         <!-- Photo -->
         <div>
           <img
-            src="/assets/images/band_photo_1.jpg"
+            src={`${base}assets/images/band_photo_1.jpg`}
             alt="SEKTAT"
             class="w-full aspect-[4/5] object-cover"
             width="600"
@@ -102,11 +104,11 @@ const lineup = [
       <div class="grid md:grid-cols-2 gap-6">
         {sortedReleases.map((release) => (
           <a
-            href={`/releases/${release.slug}`}
+            href={`${base}releases/${release.slug}`}
             class="flex gap-4 p-4 border border-sektat-gray hover:border-sektat-rust transition-colors group"
           >
             <img
-              src={release.data.cover}
+              src={`${base}${release.data.cover.replace(/^\//, '')}`}
               alt={release.data.title}
               class="w-24 h-24 object-cover flex-shrink-0"
               width="96"

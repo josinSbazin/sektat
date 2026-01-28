@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
+const base = import.meta.env.BASE_URL;
+
 const releases = await getCollection('releases');
 const sortedReleases = releases.sort((a, b) =>
   new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime()
@@ -26,10 +28,10 @@ const sortedReleases = releases.sort((a, b) =>
       <div class="grid md:grid-cols-2 gap-8">
         {sortedReleases.map((release) => (
           <article class="group">
-            <a href={`/releases/${release.slug}`} class="block">
+            <a href={`${base}releases/${release.slug}`} class="block">
               <div class="relative overflow-hidden mb-4">
                 <img
-                  src={release.data.cover}
+                  src={`${base}${release.data.cover.replace(/^\//, '')}`}
                   alt={release.data.title}
                   class="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
                   width="600"

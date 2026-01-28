@@ -1,23 +1,24 @@
 ---
 const currentPath = Astro.url.pathname;
 const currentLocale = Astro.currentLocale || 'ru';
+const base = import.meta.env.BASE_URL;
 
 const navigation = {
   ru: [
-    { href: '/', label: 'Главная' },
-    { href: '/releases', label: 'Музыка' },
-    { href: '/live', label: 'Концерты' },
-    { href: '/about', label: 'О группе' },
-    { href: '/epk', label: 'EPK' },
-    { href: '/contact', label: 'Контакты' },
+    { href: `${base}`, label: 'Главная' },
+    { href: `${base}releases`, label: 'Музыка' },
+    { href: `${base}live`, label: 'Концерты' },
+    { href: `${base}about`, label: 'О группе' },
+    { href: `${base}epk`, label: 'EPK' },
+    { href: `${base}contact`, label: 'Контакты' },
   ],
   en: [
-    { href: '/en', label: 'Home' },
-    { href: '/en/releases', label: 'Music' },
-    { href: '/en/live', label: 'Live' },
-    { href: '/en/about', label: 'About' },
-    { href: '/en/epk', label: 'EPK' },
-    { href: '/en/contact', label: 'Contact' },
+    { href: `${base}en`, label: 'Home' },
+    { href: `${base}en/releases`, label: 'Music' },
+    { href: `${base}en/live`, label: 'Live' },
+    { href: `${base}en/about`, label: 'About' },
+    { href: `${base}en/epk`, label: 'EPK' },
+    { href: `${base}en/contact`, label: 'Contact' },
   ],
 };
 
@@ -35,9 +36,9 @@ function isActive(href: string): boolean {
   <div class="container">
     <nav class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
-      <a href={currentLocale === 'en' ? '/en' : '/'} class="flex items-center gap-3 jitter-hover">
+      <a href={currentLocale === 'en' ? `${base}en` : base} class="flex items-center gap-3 jitter-hover">
         <img
-          src="/assets/logos/logo_skull_white.png"
+          src={`${base}assets/logos/logo_skull_white.png`}
           alt="SEKTAT"
           class="h-10 md:h-12 w-auto"
           width="48"
@@ -68,7 +69,7 @@ function isActive(href: string): boolean {
         <!-- Language Switch -->
         <div class="flex items-center gap-1 text-sm font-mono">
           <a
-            href="/"
+            href={base}
             class:list={[
               'px-2 py-1 transition-colors',
               currentLocale === 'ru' ? 'text-sektat-rust' : 'text-sektat-light/60 hover:text-sektat-light',
@@ -78,7 +79,7 @@ function isActive(href: string): boolean {
           </a>
           <span class="text-sektat-gray">/</span>
           <a
-            href="/en"
+            href={`${base}en`}
             class:list={[
               'px-2 py-1 transition-colors',
               currentLocale === 'en' ? 'text-sektat-rust' : 'text-sektat-light/60 hover:text-sektat-light',

@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const base = import.meta.env.BASE_URL;
+
 const links = {
   bandcamp: 'https://sektat.bandcamp.com',
   appleMusic: 'https://music.apple.com/artist/sektat/1814322842',
@@ -158,7 +160,7 @@ const pressQuotes = [
         <div class="p-6 border border-sektat-gray">
           <h3 class="font-bold mb-4">Логотипы</h3>
           <p class="text-sm text-sektat-light/60 mb-4">SVG/PNG, светлые и тёмные варианты</p>
-          <a href="/assets/logos/logo_skull_white.png" download class="btn btn-secondary w-full text-sm">
+          <a href={`${base}assets/logos/logo_skull_white.png`} download class="btn btn-secondary w-full text-sm">
             Скачать логотипы
           </a>
         </div>
@@ -167,7 +169,7 @@ const pressQuotes = [
         <div class="p-6 border border-sektat-gray">
           <h3 class="font-bold mb-4">Фотографии</h3>
           <p class="text-sm text-sektat-light/60 mb-4">Высокое разрешение для прессы</p>
-          <a href="/assets/images/band_photo_1.jpg" download class="btn btn-secondary w-full text-sm">
+          <a href={`${base}assets/images/band_photo_1.jpg`} download class="btn btn-secondary w-full text-sm">
             Скачать фото
           </a>
         </div>
@@ -176,7 +178,7 @@ const pressQuotes = [
         <div class="p-6 border border-sektat-gray">
           <h3 class="font-bold mb-4">Обложки</h3>
           <p class="text-sm text-sektat-light/60 mb-4">Обложки релизов</p>
-          <a href="/assets/images/album_cover_sektat-ii.png" download class="btn btn-secondary w-full text-sm">
+          <a href={`${base}assets/images/album_cover_sektat-ii.png`} download class="btn btn-secondary w-full text-sm">
             Скачать обложки
           </a>
         </div>
@@ -191,7 +193,7 @@ const pressQuotes = [
       <p class="text-sektat-light/60 mb-6">
         По вопросам концертов, интервью и сотрудничества
       </p>
-      <a href="/contact" class="btn btn-primary">
+      <a href={`${base}contact`} class="btn btn-primary">
         Связаться →
       </a>
     </div>

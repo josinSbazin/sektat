@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
+const base = import.meta.env.BASE_URL;
+
 const releases = await getCollection('releases');
 const latestRelease = releases.sort((a, b) =>
   new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime()
@@ -20,7 +22,7 @@ const upcomingShows = shows
       <!-- Logo -->
       <div class="mb-8">
         <img
-          src="/assets/logos/logo_skull_white.png"
+          src={`${base}assets/logos/logo_skull_white.png`}
           alt="SEKTAT"
           class="w-32 h-32 md:w-48 md:h-48 mx-auto mb-6"
           width="192"
@@ -39,13 +41,13 @@ const upcomingShows = shows
 
       <!-- CTAs -->
       <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
-        <a href="/releases" class="btn btn-primary">
+        <a href={`${base}releases`} class="btn btn-primary">
           Слушать
         </a>
-        <a href="/live" class="btn btn-secondary">
+        <a href={`${base}live`} class="btn btn-secondary">
           Концерты
         </a>
-        <a href="/epk" class="btn btn-ghost">
+        <a href={`${base}epk`} class="btn btn-ghost">
           Press Kit →
         </a>
       </div>
@@ -69,7 +71,7 @@ const upcomingShows = shows
           <!-- Cover -->
           <div class="relative group">
             <img
-              src={latestRelease.data.cover}
+              src={`${base}${latestRelease.data.cover.replace(/^\//, '')}`}
               alt={latestRelease.data.title}
               class="w-full aspect-square object-cover"
               width="600"
@@ -118,7 +120,7 @@ const upcomingShows = shows
                   Apple Music
                 </a>
               )}
-              <a href={`/releases/${latestRelease.slug}`} class="btn btn-ghost">
+              <a href={`${base}releases/${latestRelease.slug}`} class="btn btn-ghost">
                 Подробнее →
               </a>
             </div>
@@ -145,7 +147,7 @@ const upcomingShows = shows
     <div class="container">
       <div class="flex items-center justify-between mb-8">
         <h2 class="text-3xl md:text-4xl font-black">Концерты</h2>
-        <a href="/live" class="btn btn-ghost">
+        <a href={`${base}live`} class="btn btn-ghost">
           Все концерты →
         </a>
       </div>
@@ -154,7 +156,7 @@ const upcomingShows = shows
         <div class="space-y-4">
           {upcomingShows.slice(0, 3).map((show) => (
             <a
-              href={show.data.eventUrl || `/live/${show.slug}`}
+              href={show.data.eventUrl || `${base}live/${show.slug}`}
               target={show.data.eventUrl ? "_blank" : undefined}
               rel={show.data.eventUrl ? "noopener noreferrer" : undefined}
               class="block p-6 border border-sektat-gray hover:border-sektat-rust transition-colors group"
