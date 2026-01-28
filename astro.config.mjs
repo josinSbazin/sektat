@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://josinsbazin.github.io',
-  base: '/sektat',
+  base: '/sektat/',
 
   i18n: {
     defaultLocale: 'ru',
